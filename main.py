@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 pygame.init()
 
@@ -7,73 +7,152 @@ WINDOW_HEIGHT = 400
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Feed THe Dragon")
 
-
 FPS = 60
 clock = pygame.time.Clock()
 
-'''Create a constant that shores tracks player starting lives and give it a startng value of 5'''
-'''Create a constant that shores tracks player starting velociy and give it a startng value of 10'''
-'''Create a constant that shores tracks coin starting velocity and give it a startng value of 10'''
-'''Create a constant that shores tracks coin starting velocity and give it a startng value of 10'''
-'''Create a constant that shores tracks coin acceleration and give it a startng value of 0.5'''
+# Set game value:  CONSTANT_NAME, value
+''' 5 CONSTANTS
+PLAYER_STARTING_LIVES, 5
+PLAYER_VELOCITY, 10
+COIN_STARTING_VELOCITY, 10
+COIN_ACCELERATION, 0.5
+BUFFER_DISTANCE, 100
+'''
+PLAYER_STARTING_LIVES = 5
+PLAYER_VELOCITY = 10
+COIN_STARTING_VELOCITY = 10
+COIN_ACCELERATION = 0.5
+BUFFER_DISTANCE = 100
 
-'''Create a variable that tracks the score and give it a startng value of 0'''
-'''Create a variable that tracks the player and set it equal to the constant that stores player starting lives'''
-'''Create a variable that tracks the coin velocity and set it equal to the constant that coin starting velocity'''
-
+# Set Game Variables:  variable_name
+''' 3 variables
+score, 0
+player_lives, PLAYER_STARTING_LIVES
+coin_velocity, COIN_STARTING_VELOCITY
+'''
+score = 0
+player_lives = 5
+coin_velocity = 10
 
 GREEN = (0, 255, 0)
 DARK_GREEN = (10, 50, 10)
 white = (255, 255, 255)
 BLACK = (0, 0, 0)
-'''create a variable called front and give it a value from the following:  pygame.font.Font('AttackGraffiti.ttf',32)'''
 
-''' create a variable that tracks score text and give it a value following: font.render("Score: " + str(score), True, GREEN, DARK_GREEN)'''
-''' create a variable that tracks score rect and give it a value from the following: score_text.get_rect() '''
-''' title_rect.centerx + WINDOW_WIDTH / 2'''
-''' title_rect.y = 10 '''
+font = pygame.font.Font("AttackGraffiti.ttf", 32)
 
-''' Same deal, variable name lives_text, "Lives: str(player_lives), True, GREEN, DARKGREEN '''
-''' Same deal, variable name lives_rect, get from lives_text '''
-''' Same deal, topright = (WINDOW_WIDTH - 10, 10)'''
+'''
+variable names:  score_text, score_rect
+render text: "Score: " + str(score)
+antialias: True
+color: GREEN
+background: DARK_GREEN
+rect location: top_left = (10, 10)  
+'''
+score_text = font.render("Score: " + str(score), True, GREEN, DARK_GREEN)
+score_rect = score_text.get_rect()
+score_rect.topleft = (10, 10)
+
+'''
+variable names:  title_text , title_rect 
+render text: "Feed the Dragon"
+antialias: True
+color: GREEN
+background: WHITE
+rect location: center = WINDOW_WIDTH//2
+rect location: y = 10 
+'''
+title_text = font.render("Feed the Dragon", True, GREEN, white)
+title_rect = title_text.get_rect()
+title_rect.centerx = WINDOW_WIDTH // 2
+title_rect.y = 10
 
 '''
 Variable: game_over_text
 Rect: game_over_rect
-PHRASE: "GAMEOVER",
+PHRASE: "GAMEOVER"
 Antialias: True
 Color: GREEN,
-Background: DARKGREED ,
-Position: center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2),
+Background: DARK_GREED ,
+Position: center = (WINDOW_WIDTH //2, WINDOW_HEIGHT //2),
 '''
-
+game_over_text = font.render("game_over_text", True, GREEN, DARK_GREEN)
+game_over_rect = title_text.get_rect()
+game_over_rect.center = WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2
 '''
 Variable:  continue_text
 Rect: continue_rect
-PHRASE:  "Press any key to play again", 
+PHRASE:  "Press any key to play again"
 Antialias: True
 Color: GREEN, 
-Background: DARKGREEN,
-Position: center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 32),
+Background: DARK_GREEN,
+Position: center = (WINDOW_WIDTH //2, WINDOW_HEIGHT //2 + 32),
+'''
+continue_text = font.render("continue", True, GREEN, DARK_GREEN)
+continue_rect = continue_text.get_rect()
+continue_rect.center = WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 32
+
+'''
+variable names:  lives_text, lives_rect
+render text: "Lives: " + str(player_lives)
+antialias: True
+color: GREEN
+background: DARK_GREEN
+rect location: topright = (WINDOW_WIDTH - 10, 10) 
+'''
+lives_text = font.render("Lives: " + str(player_lives), True, GREEN, DARK_GREEN)
+lives_rect = lives_text.get_rect()
+lives_rect.topright = (WINDOW_WIDTH - 10, 10)
+
+coin_sound = pygame.mixer.Sound("coin_sound.wav")
+miss_sound = pygame.mixer.Sound("miss_sound.wav")
+coin_sound.set_volume(1)
+miss_sound.set_volume(0.1)
+pygame.mixer.music.load("ftd_background_music.wav")
+
+'''
+variable names:  player_image, player_rect
+image source : "dragon_right.png"
+rect location: left = 32
+rect location: centery = WINDOW_HEIGHT // 2
+'''
+player_image = pygame.image.load("dragon_right.png")
+player_rect = title_text.get_rect()
+player_rect.centery = WINDOW_HEIGHT // 2
+player_rect.left = 32
+
+'''
+variable names:  coin_image, coin_rect
+image source : coin.png"
+rect location: x = WINDOWS_WIDTH + BUFFER_DISTANCE
+rect location:  y = random.randint(64, WINDOW_HEIGHT - 32)
 '''
 
+coin_image = pygame.image.load("coin.png")
+coin_rect = title_text.get_rect()
+coin_rect.x = WINDOW_WIDTH + BUFFER_DISTANCE
+coin_rect.y = random.randint(64, WINDOW_HEIGHT - 32)
 
+pygame.mixer.music.play(-1, 0.0)
 
+# The main game loop
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    score_text = font.render("Score: " + str(score), True, GREEN, DARK_GREEN)
-    lives_text = font.render("Lives: " + str(player_lives), True, GREEN, DARK_GREEN)
-
-
+    # Fill the display
     display_surface.fill(BLACK)
-
 
     display_surface.blit(score_text, score_rect)
     display_surface.blit(title_text, title_rect)
     display_surface.blit(lives_text, lives_rect)
+    display_surface.blit(coin_image, coin_rect)
+    display_surface.blit(player_image, player_rect)
+
+    # Update display and tick the clock
+    pygame.display.update()
+    clock.tick(FPS)
 
 pygame.quit()
