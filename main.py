@@ -78,7 +78,7 @@ Position: center = (WINDOW_WIDTH //2, WINDOW_HEIGHT //2),
 '''
 game_over_text = font.render("game_over_text", True, GREEN, DARK_GREEN)
 game_over_rect = title_text.get_rect()
-game_over_rect.center = WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2
+game_over_rect.center = WINDOW_WIDTH //2, WINDOW_HEIGHT //2
 '''
 Variable:  continue_text
 Rect: continue_rect
@@ -90,7 +90,7 @@ Position: center = (WINDOW_WIDTH //2, WINDOW_HEIGHT //2 + 32),
 '''
 continue_text = font.render("continue", True, GREEN, DARK_GREEN)
 continue_rect = continue_text.get_rect()
-continue_rect.center = WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 32
+continue_rect.center = WINDOW_WIDTH // 2, WINDOW_HEIGHT //2 + 32
 
 '''
 variable names:  lives_text, lives_rect
@@ -165,7 +165,7 @@ while running:
 
 
     score_text = font.render("Score:" + str(score), True, GREEN, DARK_GREEN)
-    lives_text = font.render("Lives: " + str(player_lives), True, GREEN, DARK_GREEN)
+    lives_text = font.render("Lives:" + str(player_lives), True, GREEN, DARK_GREEN)
 
     if player_lives == 0:
         display_surface.blit(game_over_text, game_over_rect)
